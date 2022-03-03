@@ -1,26 +1,25 @@
+import curses
 import threading
-import time
+import subprocess
 
 class PMusic(threading.Thread):
-    def __init__(self):
+    def __init__(self, queue, scr):
         threading.Thread.__init__(self)
-        self.paused = False
-        self.pauseCondition = threading.Condition(threading.Lock())
+        self.song_queue = queue
+        self.event = threading.Event()
+        self.stdscr = scr
 
     def run(self):
+        global process
+
         while True:
-            with self.pauseCondition:
-                while self.paused:
-                    self.pauseCondition.wait()
-                print("started")
-            time.sleep(5)
-
-    def pause(self):
-        self.paused = True
-        self.pauseCondition.acquire()
-
-    def resume(self):
-        self.paused = False
-        self.pauseCondition.notify()
-        self.pauseCondition.release()
-
+            self.stdscr.addstr("====================")
+            while self.song_queue.qsize() > 0:
+                song = self.song_queue.get()
+                self.stdscr.addstr(f"\nNow playing: {song}")
+                self.stdscr.refresh()
+                song_url = subprocess.run(["youtube-dl", "-f", "140", "-g", "ytsearch1:%s" % song], capture_output=True).stdout.decode("utf-8")[:-1]
+                process = subprocess.Popen(args=["cvlc", "--play-and-exit", song_url], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                process.communicate()
+                self.song_queue.task_done()
+            self.event.wait()
