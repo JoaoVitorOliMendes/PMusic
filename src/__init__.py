@@ -21,15 +21,15 @@ def cmdControl(playlist: Playlist, maestro: Maestro):
                 maestro.event.set()
         elif cmd == "now" or cmd == "n":
             crtSong = playlist.getCurrentSong()
-            if crtSong:
+            if crtSong and crtSong.song:
                 print("Playing Now: " + crtSong.song)
             else:
                 print("Not currently playing")
         elif cmd == "queue" or cmd == "q":
-            print(" Queue: \n  " + "\n  ".join(repr(playlist)))
+            print(" Queue: \n  " + "\n  ".join(playlist.getPlaylist()))
         elif cmd == "skip" or cmd == "sk":
             crtSong = playlist.getCurrentSong()
-            if crtSong:
+            if crtSong and crtSong.song:
                 print("Skipping current song: " + crtSong.song)
                 if maestro.process:
                     maestro.process.kill()
