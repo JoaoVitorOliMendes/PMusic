@@ -9,7 +9,7 @@ class Playlist:
 
 
     def addSong(self, node):
-        if node:
+        if node and node.song:
             if self.head is None:
                 self.head = node
                 self.index = PlaylistNode(None)
@@ -19,9 +19,8 @@ class Playlist:
                     self.tail.next = node
                     node.previous = self.tail
             self.tail = node
-            if self.index is None:
-                self.index = self.tail
-                print(str(self.index) + "PLAYLIST" + str(self.tail))
+            if self.index is None and self.tail:
+                self.index = self.tail.previous
 
     def addNextSong(self, node):
         if self.head is None:
@@ -42,8 +41,8 @@ class Playlist:
         return self.index
 
     def hasNextSong(self):
+        print(repr(self.index))
         if self.index:
-            print(repr(self.index.next))
             return self.index.next
         return self.index
 
