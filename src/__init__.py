@@ -17,9 +17,7 @@ def cmdControl(playlist: Playlist, maestro: Maestro):
                 song = " ".join(args)
                 playlist.addSong(PlaylistNode(song))
                 print(f"\nAdded {song} to queue.")
-            boold = playlist.hasNextSong()
-            print(str(boold) + "PLAY")
-            if boold:
+            if playlist.hasNextSong():
                 maestro.event.set()
         elif cmd == "now" or cmd == "n":
             crtSong = playlist.getCurrentSong()

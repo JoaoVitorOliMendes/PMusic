@@ -41,7 +41,6 @@ class Playlist:
         return self.index
 
     def hasNextSong(self):
-        print(repr(self.index))
         if self.index:
             return self.index.next
         return self.index
