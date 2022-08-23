@@ -3,7 +3,12 @@ from src.playlist import Playlist
 from src.playlistNode import PlaylistNode
 
 
-def cmdControl(playlist: Playlist, maestro: Maestro):
+def cmdControl():
+    playlist = Playlist()
+    maestro = Maestro(playlist)
+
+    maestro.start()
+
     cmd = ""
     while True:
         command = input("  ").split()
@@ -42,3 +47,4 @@ def cmdControl(playlist: Playlist, maestro: Maestro):
                 maestro.process.kill()
                 maestro.runThread = False
             break
+    maestro.join()
