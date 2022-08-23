@@ -61,6 +61,5 @@ class Playlist:
         while node is not None:
             nodes.append(node.song)
             node = node.next
-        nodes.append("None")
         return nodes
 
